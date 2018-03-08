@@ -1,0 +1,23 @@
+{
+  "name": "CryptKee",
+  "version": "1.0.0",
+  "description": "A Chat bot that reports prices and other stats on popular cryptocurrencies",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kotsoc/CryptKee.git"
+  },
+  "keywords": [],
+  "author": "Konstantinos Peratinos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kotsoc/CryptKee/issues"
+  },
+  "homepage": "https://github.com/kotsoc/CryptKee#readme",
+  "dependencies": {
+    "discord.js": "^11.3.2"
+  }
+}
