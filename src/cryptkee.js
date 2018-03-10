@@ -59,7 +59,8 @@ bot.on('message', (message) => {
 
       resp.on('end', () => {
         const reply = JSON.parse(data);
-        message.channel.send(`name: ${reply[0])  }\n price: ${data[0]}`);
+        console.log(reply);
+        message.channel.send(`Name: ${reply[0].name}\nPrice: ${reply[0].price_eur}\nMarket Cap: ${reply[0].market_cap_eur}`);
       });
       });
   } else {
