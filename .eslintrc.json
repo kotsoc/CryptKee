@@ -1,0 +1,17 @@
+{
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "extends": ["eslint:recommended", "google"],
+  "parserOptions": {
+     "ecmaVersion": 6,
+     "sourceType": "module",
+     "ecmaFeatures": {
+         "jsx": true
+     }
+ },
+  "rules": {
+    // Additional, per-project rules...
+  }
+}
