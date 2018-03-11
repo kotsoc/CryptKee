@@ -1,4 +1,12 @@
 /* eslint linebreak-style: "off" */
+/**
+ * @description Cryptkee, a discord chat bot that reports on currept
+ * cryptocurrency prices and other related indexes.
+ * @author Konstantinos Peratinos <konstantinos.peratinos@gmail.com>
+ * @version 0.1
+ * @todo Adding i)Fiat currency as a parameter, ii)adding icons in the embed
+ */
+
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 
@@ -15,6 +23,7 @@ const shortNames = new Map([['btc', 'bitcoin'], ['eth', 'ethereum'],
 
 bot.on('ready', () => {
   console.log('I am ready!');
+  bot.user.setActivity('$help for Help');
 });
 
 
@@ -37,12 +46,13 @@ bot.on('message', (message) => {
         ${author}, Star Wars >>> Summoners War Sux!`);
     }
   } else if (command.lastIndexOf('help', 0) === 0) {
-      message.channel.send('Help does not come for free!');
+      message.channel.send('----- Usage -----\n $ <name or ticker>\n ---------------- \n $btc');
   } else if (command.includes('gam')) {
       message.channel.send(`Watch it ${author}!`);
   } else if (supported.has(command) || shortNames.has(command)) {
       const https = require('https');
       let url;
+      const embed = new Discord.RichEmbed();
 
       if (command.length > 4) {
         url = `https://api.coinmarketcap.com/v1/ticker/${command}/?convert=EUR`;
@@ -59,8 +69,18 @@ bot.on('message', (message) => {
 
       resp.on('end', () => {
         const reply = JSON.parse(data);
-        console.log(reply);
-        message.channel.send(`Name: ${reply[0].name}\nPrice: ${reply[0].price_eur}\nMarket Cap: ${reply[0].market_cap_eur}`);
+        // console.log(reply);
+        embed.setAuthor(reply[0].name +' ('+ reply[0].symbol+')'
+          , 'https://s2.coinmarketcap.com/static/img/coins/16x16/1.png');
+        embed.setFooter('Prices via Coinmarketcap.com'
+        , 'https://coinmarketcap.com/favicon.ico');
+        embed.addField('Price', parseFloat(reply[0].price_eur)
+        .toFixed(3)+ ' €', true);
+        embed.addField('24h Volume', parseFloat(reply[0]['24h_volume_eur'])
+        .toFixed(3)+' €', true);
+        embed.addField('24h Change', parseFloat(reply[0].percent_change_24h)
+        .toFixed(3)+' %', true);
+        message.channel.send({embed});
       });
       });
   } else {
