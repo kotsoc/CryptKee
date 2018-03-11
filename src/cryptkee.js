@@ -43,10 +43,11 @@ bot.on('message', (message) => {
     message.channel.send(`All hail Kotsoc the great Mastah! `);
     } else {
       message.channel.send(`Spread the Word
-        ${author}, Star Wars >>> Summoners War Sux!`);
+        ${author}, Star Wars >>> Summoners War Suxx!`);
     }
   } else if (command === 'help') {
-      const embedHelp = new Discord.RichEmbed();
+      const embedHelp = new Discord.RichEmbed().setTitle('Support')
+      .setColor(0x16689e).setDescription('Current version supports the top 10 cryptocurrencies in CoinMarketCap.\n Pricing information is in €.');
       embedHelp.addField('Usage :', '``` $ [Name of Coin]\n```');
       embedHelp.addField('Examples', '```$ BTC\n or\n$ ethereum```');
       message.channel.send(embedHelp);
