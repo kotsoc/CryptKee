@@ -4,7 +4,7 @@
  * cryptocurrency prices and other related indexes.
  * @author Konstantinos Peratinos <konstantinos.peratinos@gmail.com>
  * @version 0.1
- * @todo Adding i)Fiat currency as a parameter, ii)adding icons in the embed
+ * @todo Adding i)Fiat currency as a parameter, ii) Adding general data
  */
 
 const Discord = require('discord.js');
@@ -45,8 +45,11 @@ bot.on('message', (message) => {
       message.channel.send(`Spread the Word
         ${author}, Star Wars >>> Summoners War Sux!`);
     }
-  } else if (command.lastIndexOf('help', 0) === 0) {
-      message.channel.send('----- Usage -----\n $ <name or ticker>\n ---------------- \n $btc');
+  } else if (command === 'help') {
+      const embedHelp = new Discord.RichEmbed();
+      embedHelp.addField('Usage :', '``` $ [Name of Coin]\n```');
+      embedHelp.addField('Examples', '```$ BTC\n or\n$ ethereum```');
+      message.channel.send(embedHelp);
   } else if (command.includes('gam')) {
       message.channel.send(`Watch it ${author}!`);
   } else if (supported.has(command) || shortNames.has(command)) {
