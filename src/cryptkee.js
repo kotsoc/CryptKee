@@ -13,17 +13,42 @@ const bot = new Discord.Client();
 const config = require('../config.json');
 
 //  Supported cryptocurrencies
-const supported = new Set(['bitcoin', 'ethereum', 'ripple', 'bitcoin-cash',
- 'litecoin', 'neo', 'cardano', 'stellar', 'monero', 'eos']);
+ const supported = new Set(); //['bitcoin', 'ethereum', 'ripple', 'bitcoin-cash',
+ // 'litecoin', 'neo', 'cardano', 'stellar', 'monero', 'eos']);
 
-const shortNames = new Map([['btc', 'bitcoin'], ['eth', 'ethereum'],
- ['xrp', 'ripple'], ['bch', 'bitcoin-cash'], ['ltc', 'litecoin'],
-  ['neo', 'neo'], ['ada', 'cardano'], ['xlm', 'stellar'], ['xmr', 'monero'],
-   ['eos', 'eos']] );
+// const shortNames = new Map([['btc', 'bitcoin'], ['eth', 'ethereum'],
+//  ['xrp', 'ripple'], ['bch', 'bitcoin-cash'], ['ltc', 'litecoin'],
+//   ['neo', 'neo'], ['ada', 'cardano'], ['xlm', 'stellar'], ['xmr', 'monero'],
+//    ['eos', 'eos']] );
+
+const shortNames = new Map();
 
 bot.on('ready', () => {
+  const https = require('https');
+  let url;
+  let l;
+
   console.log('I am ready!');
   bot.user.setActivity('$help for Help');
+  url = `https://api.coinmarketcap.com/v1/ticker/?convert=EUR&limit=100`;
+
+  https.get(url, (resp) => {
+  let data = '';
+
+  resp.on('data', (chunk) => {
+    data += chunk;
+  });
+
+  resp.on('end', () => {
+    const reply = JSON.parse(data);
+     console.log(reply[1].symbol + reply[1].id);
+    for ( l = 0; l < reply.length; l++) {
+      shortNames.set(reply[l].symbol.toLowerCase(), reply[l].id.toLowerCase())
+      supported.add(reply[l].id.toLowerCase());
+    }
+    console.log(shortNames.size);
+  });
+  });
 });
 
 
