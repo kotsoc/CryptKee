@@ -66,7 +66,7 @@ bot.on('message', (message) => {
  if (command === 'help') {
       const embedHelp = new Discord.RichEmbed().setTitle('Support')
       .setColor(0x16689e).setDescription('Current version supports the top 100 cryptocurrencies listed in CoinMarketCap.\n Pricing information is in €.');
-      embedHelp.addField('$List [n]', '``` Retrieves the list of top [n] cryptocurrencies\n```');
+      embedHelp.addField('$List [n]', '``` Retrieves the list of top [10] cryptocurrencies\n```');
       embedHelp.addField('$price [name]', '```Retrieves the price, 24h volume and change\n```');
       embedHelp.addField('Examples', '```$price ethereum\nor\n$price BTC usd\n$list 10```');
 
@@ -116,11 +116,24 @@ bot.on('message', (message) => {
       });
       });
   } else if (command === 'list') {
+      const embed = new Discord.RichEmbed();
+      let i = 0;
+      let max = 10;
+      let iter = supported[Symbol.iterator]();
+      if (args[0] != null) {
+        max = args[0];
+      }
       embed.setAuthor('Top 20 cryptocurrencies Today)'
         , 'https://s2.coinmarketcap.com/static/img/coins/16x16/1.png');
-      for (let i = 0; i < supported.size; i++ ) {
+        embed.setFooter('List via Coinmarketcap.com'
+        , 'https://coinmarketcap.com/favicon.ico');
+        while (!iter.next().done && i < max) {
+          i++;
+          embed.addField(`#${i}`, iter.next().value, true);
 
-      }
+        }
+        message.channel.send({embed});
+
     } else if (command === 'psit') {
       // Command used Debugging
         if (author.username === 'kotsoc - Gamaw') {
